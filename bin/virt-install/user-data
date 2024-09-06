@@ -1,0 +1,38 @@
+#cloud-config
+ssh_pwauth: true
+
+users:
+- name: root
+  lock_passwd: false
+  hashed_passwd: $6$rfuhfh9yfndysfy9$tgMn70./r3VCRA5f5b.gRftaSouupB0xEPzpWPbBetVgbMBJXU3bOYIuLUORwNAynrXybLTPznH0M86W2h5/I.
+  ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQJQA0GiFVUcZnrjSlzFOd3ZCQhaBN4sa+HHNzKF7mk1buc8Vc+y4Ztq9b2ObpzLHPMWtkATwbvuwDSqAMPyw5OYwzdkk25OwYly4jIdb5X2Md9UfLP1md/gK1QIz2OsA8hkOnp+2PmneIdETbE6yf64faK4Ma3fTSuAvk2jGrFFoceerjcFjDmYTC+LlEcEr3+Qen/gD2i5/3gfxLCZl+8kyQjkRxnhEaIeJRv77FBHMJ8GH+o+dTt/JZlSTv+gfOuMjeKjSXwDuQmo7Pc1q6dvtd3rUcHul/FJXg2tIt4KRJvVNg/ityBQolevZLPAZ6+Y3OLdzGFAkmEFvJ5Bo5
+
+write_files:
+- path: /etc/ssh/sshd_config
+  content: |
+    PermitRootLogin yes
+  append: true
+- path: /etc/bashrc
+  content: |
+    PS1='\u@\h $ '
+    set -o vi
+  append: true
+- path: /root/.bashrc
+  content: |
+    PS1='\h # '
+  append: true
+
+power_state:
+  message: Powering off
+  mode: poweroff
+
+#packages:
+#- epel-release
+#- rsync
+#- vim-enhanced
+#runcmd:
+#- dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+#- dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+#- systemctl --now enable docker
+#- docker run -d --name mongo -p 27017:27017 --restart unless-stopped -v /data/mongo:/var/lib/mongodb mongo:4.4.29 --replSet rs0
