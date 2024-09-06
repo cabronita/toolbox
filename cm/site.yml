@@ -1,0 +1,7 @@
+---
+
+- name: Apply common configuration to all machines
+  hosts: all
+  roles:
+    - {role: common, tags: common}
+
