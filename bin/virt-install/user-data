@@ -23,16 +23,10 @@ write_files:
     PS1='\h # '
   append: true
 
+runcmd:
+- sed -i 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
 power_state:
   message: Powering off
   mode: poweroff
 
-#packages:
-#- epel-release
-#- rsync
-#- vim-enhanced
-#runcmd:
-#- dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-#- dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-#- systemctl --now enable docker
-#- docker run -d --name mongo -p 27017:27017 --restart unless-stopped -v /data/mongo:/var/lib/mongodb mongo:4.4.29 --replSet rs0
