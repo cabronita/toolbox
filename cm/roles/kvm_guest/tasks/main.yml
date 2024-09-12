@@ -1,0 +1,31 @@
+---
+
+- name: Include data.yml
+  ansible.builtin.include_tasks:
+    file: data.yml
+
+- name: Include docker.yml
+  ansible.builtin.include_tasks:
+    file: docker.yml
+
+- name: Create group
+  ansible.builtin.group:
+    name: remi
+    state: present
+    gid: 1001
+
+- name: Create user
+  ansible.builtin.user:
+    comment: Remi
+    home: /data/remi
+    group: remi
+    groups: wheel
+    name: remi
+    password: $6$dRYD3poqWwGd9ctf$/5rQe0wW/NQTRxvO.UEXsQDrbLfXNmob/KkS7LG9zwOC.7Kqbsrd/J2R6MRgQXJXRd46VPJOYaDUbcBAda8vU1
+    uid: 1001
+
+- name: Authorize ssh key
+  ansible.posix.authorized_key:
+    user: remi
+    state: present
+    key: "{{ lookup('file', '/home/remi/.ssh/id_rsa.pub') }}"

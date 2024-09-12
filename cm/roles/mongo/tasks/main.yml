@@ -1,0 +1,13 @@
+---
+
+- name: Start mongo container
+  community.docker.docker_container:
+    command: --replSet rs0
+    image: mongo:4.4.29
+    name: mongo
+    ports:
+      - "27017:27017"
+    restart_policy: "unless-stopped"
+    state: started
+    volumes:
+      - /data/mongo:/var/lib/mongodb

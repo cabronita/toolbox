@@ -1,7 +1,34 @@
 ---
 
+- name: Set host groups
+  hosts: all
+  tags: always
+  tasks:
+  - name: Set virtualization type
+    ansible.builtin.group_by:
+      key: virt_{{ ansible_virtualization_type }}_{{ ansible_virtualization_role }}
+    changed_when: false
+  - name: Print host's groups
+    ansible.builtin.debug:
+      msg: "group_names: {{ group_names }}"
+
 - name: Apply common configuration to all machines
   hosts: all
   roles:
     - {role: common, tags: common}
+
+- name: Apply configuration to kvm guests
+  hosts: virt_kvm_guest
+  roles:
+    - {role: kvm_guest, tags: kvm_guest}
+
+- name: Set up desktop servers
+  hosts: mongo
+  roles:
+    - {role: desktop, tags: desktop}
+
+- name: Set up mongo servers
+  hosts: mongo
+  roles:
+    - {role: mongo, tags: mongo}
 

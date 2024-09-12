@@ -1,63 +1,13 @@
 ---
-- name: Create data directory
-  ansible.builtin.file:
-    path: /data
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-  when: ansible_facts['product_name'] == "KVM"
 
-- name: Check if separate data filesystem exists
-  ansible.builtin.shell: lvs --noheadings -o lv_name,vg_name | grep 'data' | awk '{print $2}'
-  register: result
-  changed_when: False
-  check_mode: no
+- name: Include repos.yml
+  ansible.builtin.include_tasks:
+    file: repos.yml
 
-- name: Set fact for vg_name
-  set_fact:
-    vg_name: "{{ result.stdout }}"
-  when: result.stdout != ''
-
-- name: Update fstab and mount /data
-  ansible.posix.mount:
-    src: "/dev/{{ vg_name }}/data"
-    path: /data
-    fstype: xfs
-    state: mounted
-  when: vg_name is defined and result.stdout_lines|length == 1
-
-#- name: Install epel-release
-#  yum:
-#    name: epel-release
-
-- name: Add docker-ce repo
-  ansible.builtin.command:
-    cmd: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-
-- name: Install docker-ce packages
+- name: Install packages
   ansible.builtin.package:
     name:
-      - containerd.io
-      - docker-ce
-      - docker-ce-cli
-      - docker-compose-plugin
-    state: present
+      - rsync
+      - vim-enhanced
+    state: latest
 
-- name: Enable docker service
-  ansible.builtin.systemd_service:
-    name: docker
-    enabled: true
-    state: started
-
-- name: Start mongo container
-  community.docker.docker_container:
-    command: --replSet rs0
-    image: mongo:4.4.29
-    name: mongo
-    ports:
-      - "27017:27017"
-    restart_policy: "unless-stopped"
-    state: started
-    volumes:
-      - /data/mongo:/var/lib/mongodb
