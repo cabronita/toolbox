@@ -8,6 +8,15 @@
   ansible.builtin.package:
     name:
       - rsync
+      - telegraf
       - vim-enhanced
-    state: latest
+    state: present
 
+- name: Deploy telegraf config
+  ansible.builtin.copy:
+    src: telegraf.conf
+    dest: /etc/telegraf/telegraf.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart telegraf

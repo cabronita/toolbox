@@ -32,3 +32,8 @@
   roles:
     - {role: mongo, tags: mongo}
 
+- name: Set up simrail buffer
+  hosts: simrail
+  roles:
+    - {role: simrail, tags: simrail}
+

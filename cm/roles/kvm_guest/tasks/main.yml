@@ -29,3 +29,30 @@
     user: remi
     state: present
     key: "{{ lookup('file', '/home/remi/.ssh/id_rsa.pub') }}"
+
+- name: Start arping container
+  community.docker.docker_container:
+    command: -v 192.168.1.3
+    image: cabronita/arping
+    name: ip3
+    network_mode: host
+    restart_policy: "unless-stopped"
+    state: started
+
+- name: Start arping container
+  community.docker.docker_container:
+    command: -v 192.168.1.4
+    image: cabronita/arping
+    name: ip4
+    network_mode: host
+    restart_policy: "unless-stopped"
+    state: started
+
+- name: Start arping container
+  community.docker.docker_container:
+    command: -v 192.168.1.15
+    image: cabronita/arping
+    name: ip15
+    network_mode: host
+    restart_policy: "unless-stopped"
+    state: started
