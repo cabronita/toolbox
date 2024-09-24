@@ -8,6 +8,10 @@
   ansible.builtin.include_tasks:
     file: docker.yml
 
+- name: Include httpd.yml
+  ansible.builtin.include_tasks:
+    file: httpd.yml
+
 - name: Create group
   ansible.builtin.group:
     name: remi
