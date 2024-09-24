@@ -1,0 +1,21 @@
+---
+
+- name: Create data directory
+  file:
+    path: /data/grafana
+    owner: 1000
+    group: 1000
+    mode: "0755"
+    state: directory
+
+- name: Start container
+  community.docker.docker_container:
+    image: grafana/grafana-oss:10.4.2-ubuntu 
+    name: grafana
+    ports:
+      - "3000:3000"
+    restart_policy: "unless-stopped"
+    state: started
+    user: 1000:1000
+    volumes:
+      - /data/grafana:/var/lib/grafana

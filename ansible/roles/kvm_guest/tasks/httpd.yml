@@ -1,0 +1,36 @@
+---
+
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - httpd
+      - mod_ssl
+    state: present
+
+- name: Deploy config
+  ansible.builtin.template:
+    src: cabronita.conf.j2
+    dest: /etc/httpd/conf.d/cabronita.conf
+    owner: 1000
+    group: 1000
+    mode: '0644'
+  notify: Restart httpd
+
+- name: Deploy ssl files
+  ansible.builtin.copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: 1000
+    group: 1000
+    mode: '{{ item.mode }}'
+  loop:
+    - { src: cabronita.com.key, dest: /etc/pki/tls/private/cabronita.com.key, mode: '0600' }
+    - { src: cabronita.com.crt, dest: /etc/pki/tls/certs/cabronita.com.crt, mode: '0644' }
+    - { src: cabronita.com.intermediate.crt, dest: /etc/pki/tls/certs/cabronita.com.intermediate.crt, mode: '0644' }
+  notify: Restart httpd
+
+- name: Start service
+  ansible.builtin.systemd_service:
+    name: httpd
+    enabled: true
+    state: started
