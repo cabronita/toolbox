@@ -42,7 +42,9 @@ echo "Beginning installation..."
 virt-install ${VIRT_INST_ARGS} \
     && echo "${GUEST} installation started. Connecting to console..." \
     && virsh console ${GUEST} \
-    && echo "${GUEST} installation complete. Starting domain..." \
+    && echo "${GUEST} installation complete. Removing cloud-init user-data disk..." \
+    && virsh detach-disk dia /var/lib/libvirt/images/user-data.img --persistent \
+    && echo "${GUEST} re-starting..." \
     && virsh start ${GUEST} \
     && echo "${GUEST} started."
 

@@ -1,5 +1,17 @@
 #cloud-config
+
+locale: en_GB.UTF-8
+
+power_state:
+  message: Powering off
+  mode: poweroff
+
+runcmd:
+- sed -i 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
 ssh_pwauth: true
+
+timezone: Europe/London
 
 users:
 - name: root
@@ -22,11 +34,3 @@ write_files:
   content: |
     PS1='\h # '
   append: true
-
-runcmd:
-- sed -i 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
-
-power_state:
-  message: Powering off
-  mode: poweroff
-
