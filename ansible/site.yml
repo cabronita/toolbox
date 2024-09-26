@@ -29,6 +29,11 @@
   roles:
     - {role: grafana, tags: grafana}
 
+- name: Set up influx server
+  hosts: influx
+  roles:
+    - {role: influx, tags: influx}
+
 - name: Set up desktop servers
   hosts: mongo
   roles:

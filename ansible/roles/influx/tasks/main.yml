@@ -1,0 +1,21 @@
+---
+
+- name: Create data directory
+  ansible.builtin.file:
+    path: /data/influx
+    owner: 1000
+    group: 1000
+    mode: "0755"
+    state: directory
+
+- name: Start container
+  community.docker.docker_container:
+    image: influxdb:2.2.0
+    name: influx
+    ports:
+      - "8086:8086"
+    restart_policy: "unless-stopped"
+    state: started
+    user: 1000:1000
+    volumes:
+      - /data/influx:/var/lib/influxdb2

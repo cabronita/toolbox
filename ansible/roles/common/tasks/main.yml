@@ -7,6 +7,9 @@
 - name: Install packages
   ansible.builtin.package:
     name:
+      - ansible
+      - git
+      - python3-pip
       - rsync
       - telegraf
       - vim-enhanced
@@ -20,3 +23,15 @@
     group: root
     mode: 0644
   notify: restart telegraf
+
+- name: Add docker group
+  ansible.builtin.group:
+    gid: 1000
+    name: docker
+
+- name: Add user docker
+  ansible.builtin.user:
+    name: docker
+    uid: 1000
+    group: 1000
+

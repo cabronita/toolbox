@@ -1,13 +1,13 @@
 ---
 
-- name: Install packages
+- name: Install packages for httpd
   ansible.builtin.package:
     name:
       - httpd
       - mod_ssl
     state: present
 
-- name: Deploy config
+- name: Deploy httpd config
   ansible.builtin.template:
     src: cabronita.conf.j2
     dest: /etc/httpd/conf.d/cabronita.conf
@@ -16,7 +16,7 @@
     mode: '0644'
   notify: Restart httpd
 
-- name: Deploy ssl files
+- name: Deploy httpd ssl files
   ansible.builtin.copy:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
@@ -29,7 +29,7 @@
     - { src: cabronita.com.intermediate.crt, dest: /etc/pki/tls/certs/cabronita.com.intermediate.crt, mode: '0644' }
   notify: Restart httpd
 
-- name: Start service
+- name: Start httpd service
   ansible.builtin.systemd_service:
     name: httpd
     enabled: true
