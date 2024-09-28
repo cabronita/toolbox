@@ -51,6 +51,11 @@
   roles:
     - {role: mongo, tags: mongo}
 
+- name: Set up samba server
+  hosts: samba
+  roles:
+    - {role: samba, tags: samba}
+
 - name: Set up simrail buffer
   hosts: simrail
   roles:

@@ -1,0 +1,14 @@
+---
+
+- name: Restart samba
+  ansible.builtin.systemd_service:
+    name: smb
+    enabled: yes
+    state: restarted
+
+- name: Restart nmb
+  ansible.builtin.systemd_service:
+    name: nmb
+    enabled: yes
+    state: restarted
+
