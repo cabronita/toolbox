@@ -24,8 +24,8 @@
   ansible.builtin.file:
     name: /davfs
     mode: '0755'
-    owner: root
-    group: root
+    owner: docker
+    group: docker
     state: directory
 
 - name: Write secret

@@ -41,6 +41,11 @@
   roles:
     - {role: influx, tags: influx}
 
+- name: Set up jenkins server
+  hosts: jenkins
+  roles:
+    - {role: jenkins, tags: jenkins}
+
 - name: Set up desktop servers
   hosts: mongo
   roles:
