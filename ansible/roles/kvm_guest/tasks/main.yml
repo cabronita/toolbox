@@ -23,7 +23,7 @@
     comment: Remi
     home: /data/remi
     group: remi
-    groups: wheel
+    groups: docker,wheel
     name: remi
     password: $6$dRYD3poqWwGd9ctf$/5rQe0wW/NQTRxvO.UEXsQDrbLfXNmob/KkS7LG9zwOC.7Kqbsrd/J2R6MRgQXJXRd46VPJOYaDUbcBAda8vU1
     uid: 1001
@@ -32,7 +32,7 @@
   ansible.posix.authorized_key:
     user: remi
     state: present
-    key: "{{ lookup('file', '/home/remi/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 - name: Start arping container
   community.docker.docker_container:

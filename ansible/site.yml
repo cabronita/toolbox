@@ -24,6 +24,13 @@
 
 # Now everything else
 
+- name: Set up davfs2 client
+  hosts: virt_kvm_guest
+  roles:
+    - {role: davfs2, tags: davfs2}
+  vars:
+    davfs2_package: davfs2-1.7.0-5.el9.x86_64
+
 - name: Set up grafana server
   hosts: grafana
   roles:
