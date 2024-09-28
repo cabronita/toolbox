@@ -1,0 +1,46 @@
+---
+
+- name: Already installed
+  ansible.builtin.command: /usr/bin/dnf info "{{ davfs2_package }}"
+  register: davfs2_required 
+  ignore_errors: true
+  changed_when: false
+
+- name: Download davfs2 package
+  when: davfs2_required.rc == 1
+  ansible.builtin.get_url:
+    url: ftp://anonymous:anonymous@router.cabronita.com/davfs2-1.7.0-5.el9.x86_64.rpm
+    force_basic_auth: true
+    dest: /dev/shm/davfs2-1.7.0-5.el9.x86_64.rpm
+
+- name: Install davfs2 package
+  when: davfs2_required.rc == 1
+  ansible.builtin.dnf:
+    name: /dev/shm/davfs2-1.7.0-5.el9.x86_64.rpm
+    disable_gpg_check: true
+    state: present
+
+- name: Create mountpoint
+  ansible.builtin.file:
+    name: /davfs
+    mode: '0755'
+    owner: root
+    group: root
+    state: directory
+
+- name: Write secret
+  ansible.builtin.copy:
+    src: secrets
+    dest: /etc/davfs2/
+    mode: '0600'
+    owner: root
+    group: root
+
+- name: Mount filesystem
+  ansible.posix.mount:
+    src: https://myfiles.fastmail.com
+    path: /davfs
+    fstype: davfs
+    opts: _netdev,uid=docker,gid=docker,dir_mode=0775
+    state: mounted
+
