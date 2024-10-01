@@ -7,7 +7,7 @@ if [ -z "${GUEST}" ]; then
 fi
 
 declare -A PROPERTIES=( \
-    ["capri,memory"]=4096
+    ["capri,memory"]=8192
     ["capri,mac"]=22
     ["capri,data_disk"]="/dev/disk/by-id/ata-OCZ-VERTEX4_OCZ-368O197QC150M69N"
 
@@ -35,7 +35,7 @@ rm -f ${USER_DATA}
 
 cloud-localds ${USER_DATA} user-data
 
-qemu-img create -b ${CLOUD_IMAGE} -F qcow2 -f qcow2 ${GUEST_DISK} 10G
+qemu-img create -b ${CLOUD_IMAGE} -F qcow2 -f qcow2 ${GUEST_DISK} 20G
 
 VIRT_INST_ARGS="
     --autostart

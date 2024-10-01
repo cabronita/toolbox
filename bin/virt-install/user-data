@@ -1,5 +1,9 @@
 #cloud-config
 
+growpart:
+  devices: [/dev/vda4]
+  mode: auto
+
 locale: en_GB.UTF-8
 
 power_state:
@@ -8,6 +12,8 @@ power_state:
 
 runcmd:
 - sed -i 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+- lvextend -l +100%FREE /dev/mapper/rocky-lvroot
+- xfs_growfs /dev/mapper/rocky-lvroot
 
 ssh_pwauth: true
 
