@@ -7,7 +7,11 @@ if [ -z "${GUEST}" ]; then
 fi
 
 declare -A PROPERTIES=( \
-    ["capri,memory"]=8192
+    ["amber,memory"]=8192
+    ["amber,mac"]=21
+    ["amber,data_disk"]="/dev/disk/by-id/ata-CT1000BX500SSD1_2033E4A83DD5"
+
+    ["capri,memory"]=4096
     ["capri,mac"]=22
     ["capri,data_disk"]="/dev/disk/by-id/ata-OCZ-VERTEX4_OCZ-368O197QC150M69N"
 
