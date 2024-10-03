@@ -60,3 +60,8 @@
     network_mode: host
     restart_policy: "unless-stopped"
     state: started
+
+- name: Install java
+  ansible.builtin.dnf:
+    name: java-17-openjdk
+    state: present

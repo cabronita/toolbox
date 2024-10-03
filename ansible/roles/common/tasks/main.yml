@@ -9,6 +9,7 @@
     name:
       - ansible
       - git
+      - python3.11
       - python3-pip
       - rsync
       - telegraf
@@ -34,4 +35,15 @@
     name: docker
     uid: 1000
     group: 1000
+
+- name: Add jenkins group
+  ansible.builtin.group:
+    gid: 1002
+    name: jenkins
+
+- name: Add user jenkins
+  ansible.builtin.user:
+    name: jenkins
+    uid: 1002
+    group: 1002
 
