@@ -47,7 +47,7 @@
     - {role: jenkins, tags: jenkins}
 
 - name: Set up desktop servers
-  hosts: mongo
+  hosts: desktop
   roles:
     - {role: desktop, tags: desktop}
 
