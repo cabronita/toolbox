@@ -9,10 +9,12 @@
     name:
       - ansible
       - git
+      - lsof
       - python3.11
       - python3-pip
       - rsync
       - telegraf
+      - unzip
       - vim-enhanced
     state: present
 
