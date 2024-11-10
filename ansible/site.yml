@@ -17,6 +17,11 @@
   roles:
     - {role: common, tags: common}
 
+- name: Set up kvm host
+  hosts: virt_kvm_host
+  roles:
+    - {role: virt_kvm_host, tags: virt_kvm_host}
+
 - name: Apply configuration to kvm guests
   hosts: virt_kvm_guest
   roles:

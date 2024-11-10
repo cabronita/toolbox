@@ -1,0 +1,33 @@
+---
+
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - cloud-init
+      - libvirt
+      - qemu-kvm
+      - virt-install
+    state: present
+
+- name: Enable and start libvirtd
+  ansible.builtin.systemd:
+    daemon_reload: true
+    enabled: true
+    name: libvirtd
+    state: started
+
+- name: Configure bridge interface
+  community.general.nmcli:
+    conn_name: br0
+    ifname: br0
+    state: present
+    type: bridge
+
+- name: Configure bridge port
+  community.general.nmcli:
+    conn_name: eno1
+    ifname: eno1
+    master: br0
+    slave_type: bridge
+    state: present
+    type: ethernet
