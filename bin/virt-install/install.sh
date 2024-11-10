@@ -37,23 +37,21 @@ virsh destroy ${GUEST} 2>/dev/null \
 rm -f ${GUEST_DISK}
 rm -f ${USER_DATA}
 
-cloud-localds ${USER_DATA} user-data
+genisoimage -joliet -rational-rock -volid cidata -output ${USER_DATA} meta-data user-data vendor-data
 
 qemu-img create -b ${CLOUD_IMAGE} -F qcow2 -f qcow2 ${GUEST_DISK} 20G
 
 VIRT_INST_ARGS="
+    --autoconsole text
     --autostart
-    --boot hd,menu=on
     --disk path=${GUEST_DISK},device=disk
-    --disk path=${USER_DATA},format=raw
     --disk ${DATA_DISK}
-    --graphics none
+    --disk path=${USER_DATA},device=cdrom,format=raw
+    --import
     --memory ${MEMORY}
     --name ${GUEST}
     --network bridge=br0,mac=${MAC}
-    --noautoconsole
-    --os-type Linux
-    --os-variant rhel8-unknown
+    --os-variant rocky9
     --vcpus 4
     --virt-type kvm
 "
@@ -61,10 +59,6 @@ VIRT_INST_ARGS="
 echo "Beginning installation..."
 
 virt-install ${VIRT_INST_ARGS} \
-    && echo "${GUEST} installation started. Connecting to console..." \
-    && virsh console ${GUEST} \
-    && echo "${GUEST} installation complete. Removing cloud-init user-data disk..." \
-    && virsh detach-disk ${GUEST} ${USER_DATA} --persistent \
     && echo "${GUEST} re-starting..." \
     && virsh start ${GUEST} \
     && echo "${GUEST} started."

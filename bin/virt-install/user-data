@@ -16,6 +16,7 @@ runcmd:
 - xfs_growfs /dev/mapper/rocky-lvroot
 
 ssh_pwauth: true
+disable_root: false
 
 timezone: Europe/London
 
