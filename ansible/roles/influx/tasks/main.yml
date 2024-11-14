@@ -10,7 +10,7 @@
 
 - name: Start container
   community.docker.docker_container:
-    image: influxdb:2.2.0
+    image: influxdb:2.2.0-alpine
     name: influx
     ports:
       - "8086:8086"
