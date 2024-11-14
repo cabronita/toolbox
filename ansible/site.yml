@@ -61,6 +61,11 @@
   roles:
     - {role: mongo, tags: mongo}
 
+- name: Set up rsvp monitors
+  hosts: rsvp
+  roles:
+    - {role: rsvp, tags: rsvp}
+
 - name: Set up samba server
   hosts: samba
   roles:

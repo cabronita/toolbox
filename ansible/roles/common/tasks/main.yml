@@ -50,3 +50,8 @@
     group: 1002
     password: '$6$J23HgsjhxjUEbIii$o7Lnb1z0vRFOxrWTDo4jDOemWH4Rjx0fqIG6ObWNV52FzqAi7o7xWr4D0HJTxtUdqJJdaUvvRxLN04TimlEuf0'
 
+- name: Remove /etc/motd.d/cockpit
+  ansible.builtin.file:
+    name: /etc/motd.d/cockpit
+    state: absent
+

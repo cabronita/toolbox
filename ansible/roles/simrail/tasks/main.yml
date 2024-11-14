@@ -2,7 +2,7 @@
 
 - name: Start container
   community.docker.docker_container:
-    image: cabronita/simrail
+    image: cabronita/simrail:latest
     name: simrail
     restart_policy: "on-failure"
     state: started
