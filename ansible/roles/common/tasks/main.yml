@@ -10,8 +10,7 @@
       - ansible
       - git
       - lsof
-      - python3.11
-      - python3-pip
+      - python3.12
       - rsync
       - telegraf
       - unzip
