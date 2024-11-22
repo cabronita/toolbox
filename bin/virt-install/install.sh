@@ -7,7 +7,7 @@ if [ -z "${GUEST}" ]; then
 fi
 
 declare -A PROPERTIES=( \
-    ["amber,memory"]=8192
+    ["amber,memory"]=4096
     ["amber,mac"]=21
     ["amber,data_disk"]="/dev/disk/by-id/ata-CT1000BX500SSD1_2033E4A83DD5"
 
