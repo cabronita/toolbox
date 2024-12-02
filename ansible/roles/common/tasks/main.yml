@@ -12,6 +12,7 @@
       - lsof
       - python3.12
       - rsync
+      - screen
       - telegraf
       - unzip
       - vim-enhanced
