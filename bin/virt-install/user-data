@@ -1,0 +1,43 @@
+#cloud-config
+
+growpart:
+  devices: [/dev/vda4]
+  mode: auto
+
+locale: en_GB.UTF-8
+
+power_state:
+  message: Powering off
+  mode: poweroff
+
+runcmd:
+- sed -i 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+- lvextend -l +100%FREE /dev/mapper/rocky-lvroot
+- xfs_growfs /dev/mapper/rocky-lvroot
+
+ssh_pwauth: true
+disable_root: false
+
+timezone: Europe/London
+
+users:
+- name: root
+  lock_passwd: false
+  hashed_passwd: $6$rfuhfh9yfndysfy9$tgMn70./r3VCRA5f5b.gRftaSouupB0xEPzpWPbBetVgbMBJXU3bOYIuLUORwNAynrXybLTPznH0M86W2h5/I.
+  ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQJQA0GiFVUcZnrjSlzFOd3ZCQhaBN4sa+HHNzKF7mk1buc8Vc+y4Ztq9b2ObpzLHPMWtkATwbvuwDSqAMPyw5OYwzdkk25OwYly4jIdb5X2Md9UfLP1md/gK1QIz2OsA8hkOnp+2PmneIdETbE6yf64faK4Ma3fTSuAvk2jGrFFoceerjcFjDmYTC+LlEcEr3+Qen/gD2i5/3gfxLCZl+8kyQjkRxnhEaIeJRv77FBHMJ8GH+o+dTt/JZlSTv+gfOuMjeKjSXwDuQmo7Pc1q6dvtd3rUcHul/FJXg2tIt4KRJvVNg/ityBQolevZLPAZ6+Y3OLdzGFAkmEFvJ5Bo5
+
+write_files:
+- path: /etc/ssh/sshd_config
+  content: |
+    PermitRootLogin yes
+  append: true
+- path: /etc/bashrc
+  content: |
+    PS1='\u@\h $ '
+    set -o vi
+  append: true
+- path: /root/.bashrc
+  content: |
+    PS1='\h # '
+  append: true
