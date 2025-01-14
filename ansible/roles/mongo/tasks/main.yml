@@ -1,0 +1,22 @@
+---
+
+- name: Create /data/mongo
+  ansible.builtin.file:
+    path: /data/mongo
+    owner: 1000
+    group: 1000
+    mode: "0755"
+    state: directory
+
+- name: Start container
+  community.docker.docker_container:
+    command: --replSet rs0
+    image: mongo:4.4.29-focal
+    name: mongo
+    ports:
+      - "27017:27017"
+    restart_policy: "unless-stopped"
+    state: started
+    user: 1000:1000
+    volumes:
+      - /data/mongo:/data/db

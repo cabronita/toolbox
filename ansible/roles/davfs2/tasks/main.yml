@@ -1,0 +1,31 @@
+---
+
+- name: Install davfs2 package
+  ansible.builtin.dnf:
+    name: davfs2-1.7.0-7.el9.x86_64
+    state: present
+
+- name: Create mountpoint
+  ansible.builtin.file:
+    name: /davfs
+    mode: '0755'
+    owner: jenkins
+    group: jenkins
+    state: directory
+
+- name: Write secret
+  ansible.builtin.copy:
+    src: secrets
+    dest: /etc/davfs2/
+    mode: '0600'
+    owner: root
+    group: root
+
+- name: Mount filesystem
+  ansible.posix.mount:
+    src: https://myfiles.fastmail.com
+    path: /davfs
+    fstype: davfs
+    opts: _netdev,uid=jenkins,gid=jenkins,dir_mode=0755
+    state: mounted
+

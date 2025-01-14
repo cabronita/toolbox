@@ -1,0 +1,78 @@
+---
+
+- name: Set host groups
+  hosts: all
+  tags: always
+  tasks:
+  - name: Set virtualization type
+    ansible.builtin.group_by:
+      key: virt_{{ ansible_virtualization_type }}_{{ ansible_virtualization_role }}
+    changed_when: false
+  - name: Print host's groups
+    ansible.builtin.debug:
+      msg: "group_names: {{ group_names }}"
+
+- name: Apply common configuration to all machines
+  hosts: all
+  roles:
+    - {role: common, tags: common}
+
+- name: Set up kvm host
+  hosts: virt_kvm_host
+  roles:
+    - {role: virt_kvm_host, tags: virt_kvm_host}
+
+- name: Apply configuration to kvm guests
+  hosts: virt_kvm_guest
+  roles:
+    - {role: kvm_guest, tags: kvm_guest}
+
+# Now everything else
+
+- name: Set up davfs2 client
+  hosts: virt_kvm_guest
+  roles:
+    - {role: davfs2, tags: davfs2}
+  vars:
+    davfs2_package: davfs2-1.7.0-5.el9.x86_64
+
+- name: Set up grafana server
+  hosts: grafana
+  roles:
+    - {role: grafana, tags: grafana}
+
+- name: Set up influx server
+  hosts: influx
+  roles:
+    - {role: influx, tags: influx}
+
+- name: Set up jenkins server
+  hosts: jenkins
+  roles:
+    - {role: jenkins, tags: jenkins}
+
+- name: Set up desktop servers
+  hosts: desktop
+  roles:
+    - {role: desktop, tags: desktop}
+
+- name: Set up mongo servers
+  hosts: mongo
+  roles:
+    - {role: mongo, tags: mongo}
+
+- name: Set up rsvp monitors
+  hosts: rsvp
+  roles:
+    - {role: rsvp, tags: rsvp}
+
+- name: Set up samba server
+  hosts: samba
+  roles:
+    - {role: samba, tags: samba}
+
+- name: Set up simrail buffer
+  hosts: simrail
+  roles:
+    - {role: simrail, tags: simrail}
+

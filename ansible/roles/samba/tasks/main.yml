@@ -1,0 +1,39 @@
+---
+
+- name: Ensure /data/public exist
+  ansible.builtin.file:
+    name: /data/public
+    mode: '0755'
+    owner: remi
+    group: remi
+    state: directory
+
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - samba
+      - samba-client
+    state: present
+
+- name: Create samba directories
+  ansible.builtin.file:
+    path: /data/{{ item.name }}
+    state: directory
+    mode: '0755'
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  with_items:
+    - { name: 'public', owner: 'remi', group: 'remi' }
+
+
+- name: Copy smb.conf
+  ansible.builtin.copy:
+    src: smb.conf
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart samba
+    - Restart nmb
+

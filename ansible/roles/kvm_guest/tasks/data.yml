@@ -1,0 +1,29 @@
+---
+
+- name: Create /data
+  ansible.builtin.file:
+    path: /data
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  when: ansible_facts['product_name'] == "KVM"
+
+- name: Check if separate data filesystem exists
+  ansible.builtin.shell: lvs --noheadings -o lv_name,vg_name | grep 'data' | awk '{print $2}'
+  register: result
+  changed_when: False
+  check_mode: no
+
+- name: Set fact for vg_name
+  set_fact:
+    vg_name: "{{ result.stdout }}"
+  when: result.stdout != ''
+
+- name: Update fstab and mount /data
+  ansible.posix.mount:
+    src: "/dev/{{ vg_name }}/data"
+    path: /data
+    fstype: xfs
+    state: mounted
+  when: vg_name is defined and result.stdout_lines|length == 1

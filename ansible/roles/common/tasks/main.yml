@@ -1,0 +1,57 @@
+---
+
+- name: Include repos.yml
+  ansible.builtin.include_tasks:
+    file: repos.yml
+
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - ansible
+      - git
+      - lsof
+      - python3.12
+      - rsync
+      - screen
+      - telegraf
+      - unzip
+      - vim-enhanced
+    state: present
+
+- name: Deploy telegraf config
+  ansible.builtin.copy:
+    src: telegraf.conf
+    dest: /etc/telegraf/telegraf.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart telegraf
+
+- name: Add docker group
+  ansible.builtin.group:
+    gid: 1000
+    name: docker
+
+- name: Add user docker
+  ansible.builtin.user:
+    name: docker
+    uid: 1000
+    group: 1000
+
+- name: Add jenkins group
+  ansible.builtin.group:
+    gid: 1002
+    name: jenkins
+
+- name: Add user jenkins
+  ansible.builtin.user:
+    name: jenkins
+    uid: 1002
+    group: 1002
+    password: '$6$J23HgsjhxjUEbIii$o7Lnb1z0vRFOxrWTDo4jDOemWH4Rjx0fqIG6ObWNV52FzqAi7o7xWr4D0HJTxtUdqJJdaUvvRxLN04TimlEuf0'
+
+- name: Remove /etc/motd.d/cockpit
+  ansible.builtin.file:
+    name: /etc/motd.d/cockpit
+    state: absent
+

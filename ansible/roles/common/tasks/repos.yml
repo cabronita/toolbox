@@ -1,0 +1,16 @@
+---
+
+- name: Install epel
+  ansible.builtin.package:
+    name:
+      - epel-release
+    state: present
+
+- name: Deploy influxdata repo
+  ansible.builtin.copy:
+    src: influxdata.repo
+    dest: /etc/yum.repos.d/influxdata.repo
+    owner: root
+    group: root
+    mode: 0644
+

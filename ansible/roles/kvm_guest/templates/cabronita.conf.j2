@@ -1,0 +1,87 @@
+# Custom dir
+
+<Directory "/data/www">
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+# 80
+
+<VirtualHost _default_:80>
+    Redirect permanent "/" "https://amber.cabronita.com/"
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerAlias flickr
+    ServerName flickr.cabronita.com
+    Redirect permanent "/" "https://flickr.cabronita.com"
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerAlias grafana
+    ServerName grafana.cabronita.com
+    Redirect permanent "/" "https://grafana.cabronita.com/"
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerAlias influx
+    ServerName influx.cabronita.com
+    Redirect permanent "/" "https://influx.cabronita.com/"
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerAlias jenkins
+    ServerName jenkins.cabronita.com
+    Redirect permanent "/" "https://jenkins.cabronita.com/"
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerAlias jenkinsdev
+    ServerName jenkinsdev.cabronita.com
+    Redirect permanent "/" "https://jenkinsdev.cabronita.com/"
+</VirtualHost>
+
+# 443
+
+<VirtualHost _default_:443>
+    SSLEngine on
+    SSLCertificateFile /etc/pki/tls/certs/cabronita.com.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/cabronita.com.key
+    SSLCertificateChainFile /etc/pki/tls/certs/cabronita.com.intermediate.crt
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName flickr.cabronita.com
+    DocumentRoot "/data/www/flickr"
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName grafana.cabronita.com
+    ProxyPass "/" "http://localhost:3000/"
+    ProxyPassReverse "/" "http://localhost:3000/"
+    ProxyPreserveHost On
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName influx.cabronita.com
+    ProxyPass "/" "http://localhost:8086/"
+    ProxyPassReverse "/" "http://localhost:8086/"
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName jenkins.cabronita.com
+    AllowEncodedSlashes NoDecode
+    ProxyPass "/" "http://localhost:8080/" nocanon
+    ProxyPassReverse "/" "http://localhost:8080/"
+    ProxyRequests Off
+    RequestHeader set X-Forwarded-Proto "https"
+
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName jenkinsdev.cabronita.com
+    ProxyPass "/" "http://localhost:8080/"
+    ProxyPassReverse "/" "http://localhost:8080/"
+</VirtualHost>
+

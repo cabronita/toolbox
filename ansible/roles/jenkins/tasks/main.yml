@@ -1,0 +1,22 @@
+---
+
+- name: Ensure /data/jenkins exists
+  ansible.builtin.file:
+    name: /data/jenkins
+    mode: '0755'
+    owner: docker
+    group: docker
+    state: directory
+
+- name: Start container
+  community.docker.docker_container:
+    image: jenkins/jenkins:2.491-alpine-jdk17
+    name: jenkins
+    ports:
+      - "8080:8080"
+    restart_policy: "unless-stopped"
+    state: started
+    user: 1000:1000
+    volumes:
+      - /data/jenkins:/var/jenkins_home
+
