@@ -7,26 +7,30 @@ if [ -z "${GUEST}" ]; then
 fi
 
 declare -A PROPERTIES=( \
-    ["amber,memory"]=4096
+    ["amber,vcpus"]=4
+    ["amber,memory"]=6144
     ["amber,mac"]=21
     ["amber,data_disk"]="/dev/disk/by-id/ata-CT1000BX500SSD1_2033E4A83DD5"
 
+    ["capri,vcpus"]=4
     ["capri,memory"]=4096
     ["capri,mac"]=22
     ["capri,data_disk"]="/dev/disk/by-id/ata-OCZ-VERTEX4_OCZ-368O197QC150M69N"
 
-    ["dia,memory"]=2048
+    ["dia,vcpus"]=2
+    ["dia,memory"]=4096
     ["dia,mac"]=23
     ["dia,data_disk"]="/dev/disk/by-id/ata-CT250BX100SSD1_1505F0029CFC"
 )
 
 DIR=/var/lib/libvirt/images
 
-CLOUD_IMAGE=${DIR}/Rocky-9-GenericCloud-LVM-9.4-20240609.0.x86_64.qcow2
+CLOUD_IMAGE=${DIR}/Rocky95.qcow2
 DATA_DISK=${PROPERTIES[${GUEST},data_disk]}
 GUEST_DISK=${DIR}/${GUEST}.qcow2
 MAC="52:54:00:00:00:${PROPERTIES[${GUEST},mac]}"
 MEMORY=${PROPERTIES[${GUEST},memory]}
+VCPUS=${PROPERTIES[${GUEST},vcpus]}
 USER_DATA=${DIR}/user-data.img
 START_TIME=$(date +%s)
 
@@ -52,7 +56,7 @@ VIRT_INST_ARGS="
     --name ${GUEST}
     --network bridge=br0,mac=${MAC}
     --os-variant rocky9
-    --vcpus 4
+    --vcpus ${VCPUS}
     --virt-type kvm
 "
 
