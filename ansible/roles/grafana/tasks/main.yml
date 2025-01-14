@@ -1,6 +1,6 @@
 ---
 
-- name: Create data directory
+- name: Create /data/grafana
   file:
     path: /data/grafana
     owner: 1000

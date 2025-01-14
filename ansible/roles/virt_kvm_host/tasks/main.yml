@@ -23,11 +23,4 @@
     state: present
     type: bridge
 
-- name: Configure bridge port
-  community.general.nmcli:
-    conn_name: eno1
-    ifname: eno1
-    master: br0
-    slave_type: bridge
-    state: present
-    type: ethernet
+# To be continued... # TODO

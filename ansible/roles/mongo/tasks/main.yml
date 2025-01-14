@@ -1,6 +1,6 @@
 ---
 
-- name: Create data directory
+- name: Create /data/mongo
   ansible.builtin.file:
     path: /data/mongo
     owner: 1000
