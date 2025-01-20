@@ -8,11 +8,13 @@
   ansible.builtin.package:
     name:
       - ansible
+      - bind-utils
       - git
       - lsof
       - python3.12
       - rsync
       - screen
+      - sysstat
       - telegraf
       - unzip
       - vim-enhanced
