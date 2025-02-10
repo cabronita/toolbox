@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+import csv
+import logging
+import os
+
+from ionos import Ionos
+
+logging.basicConfig(level=logging.INFO)
+
+ionos = Ionos(api_key_public_prefix=os.getenv("api_key_public_prefix"),
+              api_key_secret=os.getenv("api_key_secret"))
+
+
+def write_cvs(filename, lines):
+    with open(filename, mode="w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(lines)
+        print(f"Written {filename}")
+
+
+filename_a = "a_records.csv"
+lines = []
+for r in sorted(ionos.a_records, key=lambda r: r.inet_aton):
+    logging.info(f"Appending {(r.content, r.name)}")
+    lines.append((r.content, r.name))
+write_cvs(filename_a, lines)
+
+filename_cname = "cname_records.csv"
+lines = []
+for r in sorted(ionos.cname_records, key=lambda r: r.name):
+    logging.info(f"Appending {(r.name, r.content)}")
+    lines.append((r.name, r.content))
+write_cvs(filename_cname, lines)

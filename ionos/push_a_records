@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+
+from argparse import ArgumentParser
+import logging
+import os
+import sys
+
+from ionos import Ionos
+
+parser = ArgumentParser()
+parser.add_argument("file", help="ip bind file")
+parser.add_argument('-v', '--verbosity', action='count', default=0,
+                    help='increase output verbosity (-vv for debug)')
+args = parser.parse_args()
+ip_bind_file = args.file
+verbosity = args.verbosity
+
+logging_levels = [logging.WARNING, logging.INFO, logging.DEBUG]
+logging.basicConfig(level=logging_levels[verbosity],
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
+
+subnet = "192.168.1."
+
+
+def get_dhcp_records(ip_bind_file):
+    dhcp_records = []
+    try:
+        with open(ip_bind_file, "r") as file:
+            for line in file:
+                fields = line.strip().split()
+                if fields[0].startswith(subnet):
+                    dhcp_records.append(
+                        Ionos.Record({"content": fields[0],
+                                      "name": f"{fields[2]}.cabronita.com",
+                                      "type": "A"}))
+    except FileNotFoundError:
+        print(f"Cannot find {ip_bind_file}")
+        sys.exit(2)
+
+    return dhcp_records
+
+
+def get_records_to_delete(dhcp_records):
+    records_to_delete = []
+    for rec in ionos.a_records:
+        if rec.content.startswith(subnet) and rec not in dhcp_records and rec.name != "router.cabronita.com":
+            logging.info(f"Will remove {rec}")
+            records_to_delete.append(rec)
+    return records_to_delete
+
+
+def get_records_to_push(dhcp_records):
+    records_to_push = []
+    for rec in dhcp_records:
+        if rec not in ionos.a_records:
+            logging.info(f"Need to add {rec} to DNS")
+            records_to_push.append(rec)
+    return records_to_push
+
+
+def get_records_to_update(dhcp_records):
+    records_to_update = []
+    for dhcp_rec in dhcp_records:
+        for a_rec in ionos.a_records:
+            if dhcp_rec.name == a_rec.name:
+                if dhcp_rec.content != a_rec.content:
+                    dhcp_rec.id = a_rec.id
+                    records_to_update.append(dhcp_rec)
+    return records_to_update
+
+
+if __name__ == "__main__":
+    ionos = Ionos(api_key_public_prefix=os.getenv("api_key_public_prefix"),
+                  api_key_secret=os.getenv("api_key_secret"))
+
+    dhcp_records = get_dhcp_records(ip_bind_file)
+    records_to_delete = get_records_to_delete(dhcp_records)
+    records_to_push = get_records_to_push(dhcp_records)
+    records_to_update = get_records_to_update(dhcp_records)
+
+    if records_to_delete:
+        print("\nWill delete:")
+        for rec in records_to_delete:
+            print(rec.name)
+
+    if records_to_push:
+        print("\nWill push:")
+        for rec in records_to_push:
+            print(rec.name)
+
+    if records_to_update:
+        print("\nWill update:")
+        for rec in records_to_update:
+            print(rec.name)
+
+    if records_to_delete or records_to_push or records_to_update:
+        if input("\nType 'yes' to proceed: ") == "yes":
+            if records_to_delete:
+                for rec in records_to_delete:
+                    if ionos.delete_record(rec) == 200:
+                        print(f"Deleted {rec.name}")
+                    else:
+                        print(f"Failed to delete {rec.name}")
+
+            if records_to_push:
+                if ionos.create_records(records_to_push) == 201:
+                    print("OK")
+                else:
+                    print("Push failed")
+
+            if records_to_update:
+                for rec in records_to_update:
+                    if ionos.update_record(rec) == 200:
+                        print(f"Updated {rec.name}")
+                    else:
+                        print(f"Failed to update {rec.name}")
+
+        else:
+            print("Operation cancelled")
+
+    else:
+        print("Nothing to do")
