@@ -1,0 +1,22 @@
+---
+
+- name: Deploy configuration file
+  ansible.builtin.copy:
+    src: prometheus.yml
+    dest: /data/prometheus/etc/prometheus.yml
+    mode: "0644"
+    owner: 1000
+    group: 1000
+  notify: restart container
+
+- name: Deploy prometheus
+  community.docker.docker_container:
+    image: prom/prometheus:v3.1.0
+    name: prometheus
+    ports:
+      - 9090:9090
+    restart_policy: "unless-stopped"
+    user: 1000:1000
+    volumes:
+      - /data/prometheus/data:/prometheus
+      - /data/prometheus/etc/prometheus.yml:/etc/prometheus/prometheus.yml

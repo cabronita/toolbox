@@ -1,0 +1,6 @@
+---
+
+- name: restart container
+  community.docker.docker_container:
+    name: prometheus
+    restart: true

@@ -61,6 +61,11 @@
   roles:
     - {role: mongo, tags: mongo}
 
+- name: Set up prometheus servers
+  hosts: prometheus
+  roles:
+    - {role: prometheus, tags: prometheus}
+
 - name: Set up rsvp monitors
   hosts: rsvp
   roles:
