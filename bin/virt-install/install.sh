@@ -67,6 +67,7 @@ virt-install ${VIRT_INST_ARGS} \
     && virsh start ${GUEST} \
     && echo "${GUEST} started."
 
+virsh change-media ${GUEST} sda --eject --config
 rm -f ${USER_DATA}
 
 FINISH_TIME=$(date +%s)
