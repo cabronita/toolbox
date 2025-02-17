@@ -12,6 +12,7 @@
       - git
       - lsof
       - python3.12
+      - python3.12-pip
       - rsync
       - screen
       - sysstat
