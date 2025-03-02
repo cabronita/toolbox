@@ -38,24 +38,24 @@ class Ionos:
         self.__api_key = f"{api_key_public_prefix}.{api_key_secret}"
         self.__base_url = "https://api.hosting.ionos.com/dns"
         self.__headers = {"accept": "application/json", "X-API-Key": self.__api_key}
-        self.zone = self.get_zone()
-        self.records = self.get_records()
+        self.zone = self._get_zone()
+        self.records = self._get_records()
         self.a_records = self.get_a_records()
         self.cname_records = self.get_cname_records()
 
-    def get_data(self, endpoint):
+    def _get_data(self, endpoint):
         logger.info(f"Getting data from {endpoint}")
         url = f"{self.__base_url}{endpoint}"
         headers = self.__headers
         return requests.get(url=url, headers=headers)
 
-    def get_zone(self):
-        response = self.get_data("/v1/zones")
+    def _get_zone(self):
+        response = self._get_data("/v1/zones")
         return response.json()[0]["id"]
 
-    def get_records(self):
+    def _get_records(self):
         records = []
-        response = self.get_data(f"/v1/zones/{self.zone}")
+        response = self._get_data(f"/v1/zones/{self.zone}")
         for item in response.json()["records"]:
             records.append(self.Record(item))
         return records
@@ -124,8 +124,7 @@ class Ionos:
         :return: status code
         """
         logger.info(f"Updating {record.name}")
-        print(vars(record))
-        json_data = {"content": record.content}
+        json_data = {"content": record.content, "ttl": record.ttl}
         headers = self.__headers
         headers["Content-Type"] = "application/json"
         response = requests.put(url=f"{self.__base_url}/v1/zones/{self.zone}/records/{record.id}", headers=headers,

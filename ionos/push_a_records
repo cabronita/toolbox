@@ -61,12 +61,12 @@ def get_records_to_push(dhcp_records):
 
 def get_records_to_update(dhcp_records):
     records_to_update = []
-    for dhcp_rec in dhcp_records:
+    for record in dhcp_records:
         for a_rec in ionos.a_records:
-            if dhcp_rec.name == a_rec.name:
-                if dhcp_rec.content != a_rec.content:
-                    dhcp_rec.id = a_rec.id
-                    records_to_update.append(dhcp_rec)
+            if record.name == a_rec.name:
+                if record.content != a_rec.content:
+                    record.id = a_rec.id
+                    records_to_update.append(record)
     return records_to_update
 
 
