@@ -20,7 +20,7 @@ class Ionos:
             self.name: str = None
             self.prio = None
             self.rootName = None
-            self.ttl = None
+            self.ttl = 3600
             self.type = None
             self.__dict__ = d
             if self.type == "A":
