@@ -16,11 +16,11 @@
     name: libvirtd
     state: started
 
-- name: Configure bridge interface
-  community.general.nmcli:
-    conn_name: br0
-    ifname: br0
-    state: present
-    type: bridge
+#- name: Configure bridge interface
+#  community.general.nmcli:
+#    conn_name: br0
+#    ifname: br0
+#    state: present
+#    type: bridge
 
 # To be continued... # TODO
