@@ -10,7 +10,7 @@
 
 - name: Start container
   community.docker.docker_container:
-    image: jenkins/jenkins:2.491-alpine-jdk17
+    image: jenkins/jenkins:2.505-alpine-jdk21
     name: jenkins
     ports:
       - "8080:8080"
