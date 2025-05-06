@@ -17,20 +17,20 @@
   roles:
     - {role: common, tags: common}
 
-- name: Set up kvm host
-  hosts: virt_kvm_host
+- name: Set up docker host
+  hosts: all
   roles:
-    - {role: virt_kvm_host, tags: virt_kvm_host}
+    - {role: docker, tags: docker}
 
 - name: Apply configuration to kvm guests
-  hosts: virt_kvm_guest
+  hosts: all
   roles:
     - {role: kvm_guest, tags: kvm_guest}
 
 # Now everything else
 
 - name: Set up davfs2 client
-  hosts: virt_kvm_guest
+  hosts: all
   roles:
     - {role: davfs2, tags: davfs2}
   vars:

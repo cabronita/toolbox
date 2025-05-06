@@ -1,5 +1,23 @@
 ---
 
+- name: Disable firewalld
+  ansible.builtin.systemd_service:
+    name: firewalld
+    enabled: false
+    state: stopped
+
+- name: Disable SELinux
+  ansible.posix.selinux:
+    state: disabled
+
+- name: Deploy custom.sh
+  ansible.builtin.copy:
+    src: custom.sh
+    dest: /etc/profile.d/custom.sh
+    owner: root
+    group: root
+    mode: 0755
+
 - name: Include repos.yml
   ansible.builtin.include_tasks:
     file: repos.yml
@@ -10,13 +28,19 @@
       - ansible
       - bind-utils
       - git
+      - lm_sensors
       - lsof
+      - net-tools
+      - pciutils
       - python3.12
       - python3.12-pip
+      - python3-requests
       - rsync
       - screen
       - sysstat
+      - tar
       - telegraf
+      - tmux
       - unzip
       - vim-enhanced
     state: present
@@ -57,4 +81,20 @@
   ansible.builtin.file:
     name: /etc/motd.d/cockpit
     state: absent
+
+- name: Create group
+  ansible.builtin.group:
+    name: remi
+    state: present
+    gid: 1001
+
+- name: Create user
+  ansible.builtin.user:
+    comment: Remi
+    home: /data/remi
+    group: remi
+    groups: docker,jenkins,wheel
+    name: remi
+    password: $6$dRYD3poqWwGd9ctf$/5rQe0wW/NQTRxvO.UEXsQDrbLfXNmob/KkS7LG9zwOC.7Kqbsrd/J2R6MRgQXJXRd46VPJOYaDUbcBAda8vU1
+    uid: 1001
 
