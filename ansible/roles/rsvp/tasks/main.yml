@@ -1,18 +1,8 @@
 ---
 
-- name: Start rd container
-  community.docker.docker_container:
-    command: 192.168.1.111 -vv
-    image: cabronita/rsvp:1.0-ubi8
-    name: rd
-    network_mode: host
-    restart_policy: "unless-stopped"
-    state: started
-    user: 1000:1000
-
 - name: Start rr container
   community.docker.docker_container:
-    command: 192.168.1.112 -vv
+    command: 192.168.1.104 -vv
     image: cabronita/rsvp:1.0-ubi8
     name: rr
     network_mode: host
@@ -20,9 +10,19 @@
     state: started
     user: 1000:1000
 
+- name: Start rd container
+  community.docker.docker_container:
+    command: 192.168.1.105 -vv
+    image: cabronita/rsvp:1.0-ubi8
+    name: rd
+    network_mode: host
+    restart_policy: "unless-stopped"
+    state: started
+    user: 1000:1000
+
 - name: Start rs container
   community.docker.docker_container:
-    command: 192.168.1.115 -vv
+    command: 192.168.1.106 -vv
     image: cabronita/rsvp:1.0-ubi8
     name: rs
     network_mode: host
