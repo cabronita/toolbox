@@ -4,10 +4,6 @@
   ansible.builtin.include_tasks:
     file: data.yml
 
-- name: Include docker.yml
-  ansible.builtin.include_tasks:
-    file: docker.yml
-
 - name: Include httpd.yml
   ansible.builtin.include_tasks:
     file: httpd.yml
