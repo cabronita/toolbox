@@ -9,13 +9,13 @@
 # 80
 
 <VirtualHost _default_:80>
-    Redirect permanent "/" "https://amber.cabronita.com/"
+    DocumentRoot "/data/www"
 </VirtualHost>
 
 <VirtualHost *:80>
     ServerAlias flickr
     ServerName flickr.cabronita.com
-    Redirect permanent "/" "https://flickr.cabronita.com"
+    Redirect permanent "/" "https://flickr.cabronita.com/"
 </VirtualHost>
 
 <VirtualHost *:80>
