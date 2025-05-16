@@ -98,3 +98,19 @@
     password: $6$dRYD3poqWwGd9ctf$/5rQe0wW/NQTRxvO.UEXsQDrbLfXNmob/KkS7LG9zwOC.7Kqbsrd/J2R6MRgQXJXRd46VPJOYaDUbcBAda8vU1
     uid: 1001
 
+- name: Add temper script
+  ansible.builtin.copy:
+    src: temper.sh
+    dest: /usr/local/sbin/
+    mode: 0700
+    owner: root
+    group: root
+
+- name: Add telegraf sudo
+  ansible.builtin.copy:
+    src: telegraf.sudo
+    dest: /etc/sudoers.d/telegraf
+    mode: 0440
+    owner: root
+    group: root
+
