@@ -28,6 +28,7 @@
       - ansible
       - bind-utils
       - git
+      - htop
       - lm_sensors
       - lsof
       - net-tools
