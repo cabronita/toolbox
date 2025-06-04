@@ -4,3 +4,7 @@
   ansible.builtin.systemd:
     name: telegraf
     state: restarted
+
+- name: Reload kernel settings
+  ansible.builtin.command:
+    cmd: sysctl --system
