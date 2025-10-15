@@ -1,6 +1,6 @@
 ---
 
-- name: Create /data/influx
+- name: Create data directory
   ansible.builtin.file:
     path: /data/influx
     owner: 1000
