@@ -1,14 +1,50 @@
 ---
 
+- name: Set root password
+  ansible.builtin.user:
+    name: root
+    password: '$y$j9T$pNxwrvIv8roAjiDm5kp0Q1$F9hCQ4J0jkWJRGU0iYXPtDqIZ7DGx8RIEec..Ariw54'
+
+- name: Authorize ssh key for root
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Set GRUB_TIMEOUT=1
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regex: "^GRUB_TIMEOUT="
+    line: GRUB_TIMEOUT=1
+  notify: Rebuild grub
+
+- name: Configure Debian servers
+  ansible.builtin.include_tasks:
+    file: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Check firewalld is installed
+  ansible.builtin.stat:
+    path: /usr/lib/systemd/system/firewalld.service
+  register: firewalld_systemd
+
 - name: Disable firewalld
   ansible.builtin.systemd_service:
     name: firewalld
     enabled: false
     state: stopped
+  when: firewalld_systemd.stat.exists
 
 - name: Disable SELinux
   ansible.posix.selinux:
     state: disabled
+  when:
+    - ansible_selinux.status is defined
+    - ansible_selinux.status != "disabled"
 
 - name: Deploy custom.sh
   ansible.builtin.copy:
@@ -21,6 +57,7 @@
 - name: Include repos.yml
   ansible.builtin.include_tasks:
     file: repos.yml
+  when: ansible_os_family == "RedHat"
 
 - name: Install packages
   ansible.builtin.package:
@@ -45,6 +82,7 @@
       - unzip
       - vim-enhanced
     state: present
+  when: ansible_distribution == "Rocky"
 
 - name: Deploy telegraf config
   ansible.builtin.copy:
@@ -94,10 +132,19 @@
     comment: Remi
     home: /data/remi
     group: remi
-    groups: docker,jenkins,wheel
+    groups: docker,jenkins
     name: remi
+    shell: /bin/bash
     password: $6$dRYD3poqWwGd9ctf$/5rQe0wW/NQTRxvO.UEXsQDrbLfXNmob/KkS7LG9zwOC.7Kqbsrd/J2R6MRgQXJXRd46VPJOYaDUbcBAda8vU1
     uid: 1001
+
+- name: Set up sudo
+  ansible.builtin.copy:
+    src: remi.sudo
+    dest: /etc/sudoers.d/remi
+    owner: root
+    group: root
+    mode: 0440
 
 - name: Add temper script
   ansible.builtin.copy:

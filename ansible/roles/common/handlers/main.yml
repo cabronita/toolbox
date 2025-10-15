@@ -8,3 +8,7 @@
 - name: Reload kernel settings
   ansible.builtin.command:
     cmd: sysctl --system
+
+- name: Rebuild grub
+  ansible.builtin.command:
+    cmd: grub2-mkconfig -o /boot/grub2/grub.cfg
