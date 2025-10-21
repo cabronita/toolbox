@@ -37,3 +37,11 @@
     - Restart samba
     - Restart nmb
 
+- name: Enable services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  with_items:
+    - nmb
+    - smb
