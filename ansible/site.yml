@@ -77,8 +77,6 @@
     - {role: simrail, tags: simrail}
 
 - name: Set up virt_kvm_host
-  #hosts: virt_kvm_host
   hosts: kvm_host
   roles:
-    - {role: virt_kvm_host, tags: virt_kvm_host}
-
+    - {role: kvm_host, tags: kvm_host}
