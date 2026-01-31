@@ -6,3 +6,5 @@
     name: simrail
     restart_policy: "on-failure"
     state: started
+    env:
+      PYTHONUNBUFFERED: "1"
