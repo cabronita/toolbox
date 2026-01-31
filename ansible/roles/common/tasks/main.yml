@@ -62,7 +62,7 @@
 - name: Install packages
   ansible.builtin.package:
     name:
-      - ansible
+      - ansible-core
       - bind-utils
       - git
       - htop
