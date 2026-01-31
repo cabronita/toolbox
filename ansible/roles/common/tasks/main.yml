@@ -66,6 +66,7 @@
       - bind-utils
       - git
       - htop
+      - java-25-openjdk
       - lm_sensors
       - lsof
       - net-tools
