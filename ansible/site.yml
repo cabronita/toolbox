@@ -26,7 +26,6 @@
   hosts: all
   roles:
     - {role: data_fs, tags: data_fs}
-    - {role: kvm_guest, tags: kvm_guest}
     - {role: webserver, tags: webserver}
 
 # Now everything else
