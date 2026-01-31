@@ -25,7 +25,9 @@
 - name: Apply configuration to kvm guests
   hosts: all
   roles:
+    - {role: data_fs, tags: data_fs}
     - {role: kvm_guest, tags: kvm_guest}
+    - {role: webserver, tags: webserver}
 
 # Now everything else
 
@@ -33,8 +35,6 @@
   hosts: all
   roles:
     - {role: davfs2, tags: davfs2}
-  vars:
-    davfs2_package: davfs2-1.7.0-5.el9.x86_64
 
 - name: Set up grafana server
   hosts: grafana
