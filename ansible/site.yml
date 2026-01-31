@@ -16,17 +16,13 @@
   hosts: all
   roles:
     - {role: common, tags: common}
+    - {role: data_fs, tags: data_fs}
+    - {role: webserver, tags: webserver}
 
 - name: Set up docker host
   hosts: all
   roles:
     - {role: docker, tags: docker}
-
-- name: Apply configuration to kvm guests
-  hosts: all
-  roles:
-    - {role: data_fs, tags: data_fs}
-    - {role: webserver, tags: webserver}
 
 # Now everything else
 
