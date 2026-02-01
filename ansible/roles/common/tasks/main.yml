@@ -22,11 +22,6 @@
     line: GRUB_TIMEOUT=1
   notify: Rebuild grub
 
-- name: Configure Debian servers
-  ansible.builtin.include_tasks:
-    file: debian.yml
-  when: ansible_os_family == "Debian"
-
 - name: Check firewalld is installed
   ansible.builtin.stat:
     path: /usr/lib/systemd/system/firewalld.service
