@@ -2,11 +2,14 @@
 
 - name: Create directories
   ansible.builtin.file:
-    path: /data/prometheus/etc
+    path: "/data/prometheus/{{ item }}"
     state: directory
     mode: 0755
     owner: 1000
     group: 1000
+  loop: 
+    - data
+    - etc
 
 - name: Deploy configuration file
   ansible.builtin.copy:
@@ -19,7 +22,7 @@
 
 - name: Deploy prometheus
   community.docker.docker_container:
-    image: prom/prometheus:v3.1.0
+    image: prom/prometheus:v3.9.1
     name: prometheus
     ports:
       - 9090:9090
