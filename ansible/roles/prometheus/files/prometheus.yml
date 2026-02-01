@@ -26,6 +26,12 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-      - targets: ["amber:9100"]
-      - targets: ["capri:9100"]
-      - targets: ["dia:9100"]
+      - targets: ["amber.cabronita.com:9100"]
+        labels:
+          host: "amber"
+      - targets: ["capri.cabronita.com:9100"]
+        labels:
+          host: "capri"
+      - targets: ["dia.cabronita.com:9100"]
+        labels:
+          host: "dia"
