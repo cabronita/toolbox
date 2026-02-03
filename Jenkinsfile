@@ -1,3 +1,4 @@
+/*
 pipeline {
     agent any
 
@@ -8,4 +9,9 @@ pipeline {
             }
         }
     }
+}
+*/
+
+node {
+    echo 'Hello, Jenkins!'
 }
