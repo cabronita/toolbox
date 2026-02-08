@@ -160,6 +160,13 @@
     owner: root
     group: root
 
+- name: Add search domain
+  community.general.nmcli:
+    conn_name: enp2s0
+    dns4_search: [cabronita.com]
+    state: up
+  tags: nmcli
+
 - name: Disable IPv6
   ansible.builtin.copy:
     src: disable-ipv6.conf
