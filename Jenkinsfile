@@ -2,10 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Stage 1') {
+        stage('Run ansible in check mode') {
             steps {
                 echo 'Step 1'
+                cd ansible
                 echo 'Step 2'
+                ansible-playboot site.yml --check
             }
         }
         stage('Stage II') {
