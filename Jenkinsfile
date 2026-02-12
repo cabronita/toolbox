@@ -7,7 +7,7 @@ pipeline {
                 echo 'Step 1'
                 cd ansible
                 echo 'Step 2'
-                ansible-playbook site.yml --check
+                sh 'ansible-playbook site.yml --check'
             }
         }
         stage('Stage II') {
