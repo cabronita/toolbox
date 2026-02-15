@@ -35,3 +35,6 @@ scrape_configs:
       - targets: ["dia.cabronita.com:9100"]
         labels:
           host: "dia"
+      - targets: ["acadia.cabronita.com:9182"]
+        labels:
+          host: "acadia"
