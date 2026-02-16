@@ -192,3 +192,4 @@
     user: 1000:1000
     volumes:
       - /:/host:ro,rslave
+  tags: node_exporter
