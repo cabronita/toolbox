@@ -18,6 +18,7 @@
     - {role: common, tags: common}
     - {role: docker, tags: docker}
     - {role: data_fs, tags: data_fs}
+    - {role: node-exporter, tags: node-exporter}
     - {role: webserver, tags: webserver}
 
 - name: Set up davfs2 client
