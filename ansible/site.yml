@@ -16,15 +16,9 @@
   hosts: all
   roles:
     - {role: common, tags: common}
+    - {role: docker, tags: docker}
     - {role: data_fs, tags: data_fs}
     - {role: webserver, tags: webserver}
-
-- name: Set up docker host
-  hosts: all
-  roles:
-    - {role: docker, tags: docker}
-
-# Now everything else
 
 - name: Set up davfs2 client
   hosts: all
