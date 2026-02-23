@@ -1,8 +1,16 @@
 ---
 
+- name: Create /data/node-exporter
+  ansible.builtin.file:
+    path: /data/node-exporter
+    owner: 1000
+    group: 1000
+    mode: 0755
+    state: directory
+
 - name: Deploy node-exporter
   community.docker.docker_container:
-    command: --path.rootfs=/host --collector.textfile.directory=/host/data/node_exporter
+    command: --path.rootfs=/host --collector.textfile.directory=/host/data/node-exporter
     image: prom/node-exporter:v1.10.2
     name: node-exporter
     network_mode: host
@@ -11,5 +19,4 @@
     user: 1000:1000
     volumes:
       - /:/host:ro,rslave
-  tags: node_exporter
 
