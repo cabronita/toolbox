@@ -6,8 +6,8 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-api_key_public_prefix = os.getenv("api_key_public_prefix")
-api_key_secret = os.getenv("api_key_secret")
+#api_key_public_prefix = os.getenv("api_key_public_prefix")
+#api_key_secret = os.getenv("api_key_secret")
 
 
 class Ionos:
