@@ -11,7 +11,16 @@
     - data
     - etc
 
-- name: Deploy configuration file
+- name: Deploy blackbox-exporter
+  community.docker.docker_container:
+    image: prom/blackbox-exporter:v0.28.0
+    name: blackbox-exporter
+    ports:
+      - 9115:9115
+    restart_policy: "unless-stopped"
+    user: 1000:1000
+
+- name: Deploy prometheus configuration file
   ansible.builtin.copy:
     src: prometheus.yml
     dest: /data/prometheus/etc/prometheus.yml
