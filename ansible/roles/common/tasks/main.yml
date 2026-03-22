@@ -74,22 +74,12 @@
       - sshpass
       - sysstat
       - tar
-      - telegraf
       - tmux
       - tuned
       - unzip
       - vim-enhanced
     state: present
   when: ansible_distribution == "Rocky"
-
-- name: Deploy telegraf config
-  ansible.builtin.copy:
-    src: telegraf.conf
-    dest: /etc/telegraf/telegraf.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart telegraf
 
 - name: Add docker group
   ansible.builtin.group:
@@ -149,14 +139,6 @@
     src: temper.sh
     dest: /usr/local/sbin/
     mode: 0700
-    owner: root
-    group: root
-
-- name: Add telegraf sudo
-  ansible.builtin.copy:
-    src: telegraf.sudo
-    dest: /etc/sudoers.d/telegraf
-    mode: 0440
     owner: root
     group: root
 
