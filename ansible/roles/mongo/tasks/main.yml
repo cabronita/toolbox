@@ -17,6 +17,8 @@
       - "27017:27017"
     restart_policy: "unless-stopped"
     state: started
+    ulimits:
+      - nofile:64000:64000
     user: 1000:1000
     volumes:
       - /data/mongo:/data/db

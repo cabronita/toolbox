@@ -2,7 +2,7 @@
 
 - name: Install davfs2 package
   ansible.builtin.dnf:
-    name: davfs2-1.7.0-7.el9.x86_64
+    name: davfs2-1.7.0
     state: present
 
 - name: Create mountpoint

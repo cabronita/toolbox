@@ -16,6 +16,8 @@
       - "8086:8086"
     restart_policy: "unless-stopped"
     state: started
+    ulimits:
+      - nofile:4096:16384
     user: 1000:1000
     volumes:
       - /data/influx:/var/lib/influxdb2

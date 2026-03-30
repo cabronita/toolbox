@@ -22,11 +22,6 @@
     line: GRUB_TIMEOUT=1
   notify: Rebuild grub
 
-- name: Configure Debian servers
-  ansible.builtin.include_tasks:
-    file: debian.yml
-  when: ansible_os_family == "Debian"
-
 - name: Check firewalld is installed
   ansible.builtin.stat:
     path: /usr/lib/systemd/system/firewalld.service
@@ -62,10 +57,11 @@
 - name: Install packages
   ansible.builtin.package:
     name:
-      - ansible
+      - ansible-core
       - bind-utils
       - git
       - htop
+      - java-25-openjdk
       - lm_sensors
       - lsof
       - net-tools
@@ -75,23 +71,15 @@
       - python3-requests
       - rsync
       - screen
+      - sshpass
       - sysstat
       - tar
-      - telegraf
       - tmux
+      - tuned
       - unzip
       - vim-enhanced
     state: present
   when: ansible_distribution == "Rocky"
-
-- name: Deploy telegraf config
-  ansible.builtin.copy:
-    src: telegraf.conf
-    dest: /etc/telegraf/telegraf.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart telegraf
 
 - name: Add docker group
   ansible.builtin.group:
@@ -154,14 +142,6 @@
     owner: root
     group: root
 
-- name: Add telegraf sudo
-  ansible.builtin.copy:
-    src: telegraf.sudo
-    dest: /etc/sudoers.d/telegraf
-    mode: 0440
-    owner: root
-    group: root
-
 - name: Disable IPv6
   ansible.builtin.copy:
     src: disable-ipv6.conf
@@ -169,3 +149,10 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Enable tuned
+  ansible.builtin.systemd_service:
+    name: tuned
+    enabled: true
+    state: started
+

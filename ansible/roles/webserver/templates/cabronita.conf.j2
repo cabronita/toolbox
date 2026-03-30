@@ -42,6 +42,12 @@
     Redirect permanent "/" "https://jenkinsdev.cabronita.com/"
 </VirtualHost>
 
+<VirtualHost *:80>
+    ServerAlias prometheus
+    ServerName prometheus.cabronita.com
+    Redirect permanent "/" "https://prometheus.cabronita.com/"
+</VirtualHost>
+
 # 443
 
 <VirtualHost _default_:443>
@@ -83,5 +89,11 @@
     ServerName jenkinsdev.cabronita.com
     ProxyPass "/" "http://localhost:8080/"
     ProxyPassReverse "/" "http://localhost:8080/"
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName prometheus.cabronita.com
+    ProxyPass "/" "http://localhost:9090/"
+    ProxyPassReverse "/" "http://localhost:9090/"
 </VirtualHost>
 

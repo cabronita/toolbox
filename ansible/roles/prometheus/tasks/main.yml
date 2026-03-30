@@ -2,13 +2,25 @@
 
 - name: Create directories
   ansible.builtin.file:
-    path: /data/prometheus/etc
+    path: "/data/prometheus/{{ item }}"
     state: directory
     mode: 0755
     owner: 1000
     group: 1000
+  loop: 
+    - data
+    - etc
 
-- name: Deploy configuration file
+- name: Deploy blackbox-exporter
+  community.docker.docker_container:
+    image: prom/blackbox-exporter:v0.28.0
+    name: blackbox-exporter
+    ports:
+      - 9115:9115
+    restart_policy: "unless-stopped"
+    user: 1000:1000
+
+- name: Deploy prometheus configuration file
   ansible.builtin.copy:
     src: prometheus.yml
     dest: /data/prometheus/etc/prometheus.yml
@@ -19,7 +31,7 @@
 
 - name: Deploy prometheus
   community.docker.docker_container:
-    image: prom/prometheus:v3.1.0
+    image: prom/prometheus:v3.9.1
     name: prometheus
     ports:
       - 9090:9090
