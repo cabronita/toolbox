@@ -1,0 +1,12 @@
+---
+
+- name: Start container
+  community.docker.docker_container:
+    devices: /dev/bus/usb
+    image: cabronita/temper:1.1-rockylinux10.1.20251123
+    name: temper
+    ports: 8000:8000
+    restart_policy: "on-failure"
+    state: started
+    env:
+      PYTHONUNBUFFERED: "1"

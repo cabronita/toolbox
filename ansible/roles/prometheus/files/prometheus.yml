@@ -4,7 +4,7 @@ global:
 
 scrape_configs:
 
-  - job_name: "prometheus"
+  - job_name: "exporters"
     static_configs:
       - targets: ["amber.cabronita.com:9100"]
         labels:
@@ -21,6 +21,13 @@ scrape_configs:
       - targets: ["prometheus.cabronita.com:9115"]
         labels:
           host: "blackbox-exporter"
+
+  - job_name: "temper"
+    scrape_interval: 60s
+    static_configs:
+      - targets: ["amber.cabronita.com:8000"]
+        labels:
+          sensor: "office"
 
   - job_name: 'pingers'
     scrape_interval: 15s

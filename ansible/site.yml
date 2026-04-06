@@ -88,6 +88,12 @@
   roles:
     - {role: simrail, tags: simrail}
 
+- name: Set up temper
+  gather_facts: false
+  hosts: temper
+  roles:
+    - {role: temper, tags: temper}
+
 - name: Set up virt_kvm_host
   gather_facts: false
   hosts: kvm_host
