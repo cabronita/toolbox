@@ -1,0 +1,2 @@
+prometheus_client==0.24.1
+temperusb==1.6.1
