@@ -64,6 +64,7 @@
       - java-25-openjdk
       - lm_sensors
       - lsof
+      - netcat
       - net-tools
       - pciutils
       - python3.12
