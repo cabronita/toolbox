@@ -3,7 +3,7 @@
 - name: Start container
   community.docker.docker_container:
     devices: /dev/bus/usb
-    image: cabronita/temper:1.1-rockylinux10.1.20251123
+    image: cabronita/temper:1.1-python3.12.13-slim-trixie
     name: temper
     ports: 8000:8000
     restart_policy: "on-failure"
