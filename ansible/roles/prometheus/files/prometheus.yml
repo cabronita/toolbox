@@ -70,3 +70,8 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: prometheus.cabronita.com:9115
+
+  - job_name: "simrail"
+    scrape_interval: 60s
+    static_configs:
+      - targets: ["simrail.cabronita.com:8000"]
