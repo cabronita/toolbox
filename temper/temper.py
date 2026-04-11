@@ -6,7 +6,7 @@ from temperusb.temper import TemperHandler
 
 if __name__ == "__main__":
     print("Starting...")
-    start_http_server(8000)
+    start_http_server(8001)
     g = Gauge("temper_celsius", "Temperature")
     th = TemperHandler()
     dev = th.get_devices()[0]
