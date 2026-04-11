@@ -18,9 +18,6 @@ scrape_configs:
       - targets: ["acadia.cabronita.com:9182"]
         labels:
           host: "acadia"
-      - targets: ["prometheus.cabronita.com:9115"]
-        labels:
-          host: "blackbox-exporter"
 
   - job_name: "temper"
     scrape_interval: 60s
