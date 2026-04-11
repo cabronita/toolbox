@@ -19,13 +19,6 @@ scrape_configs:
         labels:
           host: "acadia"
 
-  - job_name: "temper"
-    scrape_interval: 60s
-    static_configs:
-      - targets: ["amber.cabronita.com:8000"]
-        labels:
-          sensor: "office"
-
   - job_name: 'blackbox-exporter'
     scrape_interval: 15s
     metrics_path: /probe
@@ -72,3 +65,10 @@ scrape_configs:
     scrape_interval: 60s
     static_configs:
       - targets: ["simrail.cabronita.com:8000"]
+
+  - job_name: "temper"
+    scrape_interval: 60s
+    static_configs:
+      - targets: ["amber.cabronita.com:8001"]
+        labels:
+          sensor: "office"
