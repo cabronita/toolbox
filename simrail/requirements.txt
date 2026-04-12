@@ -1,0 +1,4 @@
+prometheus_client==0.24.1
+pymongo==4.6.3
+requests==2.31.0
+requests-cache==1.2.0
