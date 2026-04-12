@@ -1,0 +1,38 @@
+pipeline {
+
+    agent any
+
+    environment {
+        TAG_UNIXTIME = "${sh(returnStdout: true, script: 'date +%Y%m%d_%H%M%S').trim()}"
+        IMAGE_TAG = "cabronita/simrail:${TAG_UNIXTIME}"
+    }
+
+    stages {
+
+        stage('Build Docker image') {
+            steps {
+                sh "cd simrail; docker build -t ${IMAGE_TAG} ."
+            }
+        }
+
+        stage('Run the image') {
+            steps {
+                sh "docker rm -f simrail-test"
+                sh "docker run -d --rm --name simrail-test -p 9999:8000 ${IMAGE_TAG}"
+            }
+        }
+
+        stage('Test the container') {
+            steps {
+                sh "sleep 5; curl -s http://localhost:9999 | grep ^simrail_"
+            }
+        }
+
+        stage('Teardown') {
+            steps {
+                sh "docker rm -f simrail-test"
+            }
+        }
+
+    }
+}
