@@ -1,16 +1,26 @@
 import logging
+import sys
 
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
 from requests_cache import CachedSession, MongoCache
 
 from . import prometheus_metrics
 
 logger = logging.getLogger(__name__)
 
-mongo_client = MongoClient("mongodb://mongo1.cabronita.com:27017,"
-                           "mongo2.cabronita.com:27017,"
-                           "mongo3.cabronita.com:27017"
-                           "/?replicaSet=rs0")
+mongo_client = MongoClient(
+    "mongodb://mongo1.cabronita.com:27017,"
+    "mongo2.cabronita.com:27017,"
+    "mongo3.cabronita.com:27017"
+    "/?replicaSet=rs0",
+    serverSelectionTimeoutMS=1000)
+try:
+    mongo_client.admin.command('ping')
+except ConnectionFailure:
+    print("Mongo connection failed")
+    sys.exit(2)
+
 cache_backend = MongoCache(connection=mongo_client)
 session = CachedSession(backend=cache_backend, expire_after=60)
 
