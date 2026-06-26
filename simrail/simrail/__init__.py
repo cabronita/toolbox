@@ -9,12 +9,12 @@ from . import prometheus_metrics
 
 logger = logging.getLogger(__name__)
 
-mongo_client = MongoClient(
-    "mongodb://mongo1.cabronita.com:27017,"
-    "mongo2.cabronita.com:27017,"
-    "mongo3.cabronita.com:27017"
-    "/?replicaSet=rs0",
-    serverSelectionTimeoutMS=1000)
+mongo_client = MongoClient("mongodb://mongo1.cabronita.com:27017,"
+                           "mongo2.cabronita.com:27017,"
+                           "mongo3.cabronita.com:27017"
+                           "/?replicaSet=rs0",
+                           serverSelectionTimeoutMS=1000)
+
 try:
     mongo_client.admin.command('ping')
 except ConnectionFailure:
