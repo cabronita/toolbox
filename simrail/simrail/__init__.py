@@ -86,6 +86,10 @@ class Train:
         self.user = dict['TrainData']['ControlledBySteamID']
 
 
+def get_json(url):
+    return session.get(url).json()
+
+
 def get_servers(all=False):
     """
     Return list of server codes
@@ -93,7 +97,7 @@ def get_servers(all=False):
     """
     servers = []
     logger.info(f"Getting servers")
-    for item in session.get(servers_url).json()['data']:
+    for item in get_json(servers_url)['data']:
         if item['IsActive']:
             if all:
                 servers.append(item['ServerCode'])
@@ -109,7 +113,7 @@ def get_server_time_offset(server):
     """
     try:
         logger.info(f"Getting offset for {server}")
-        offset = session.get(server_times_url + server).json()
+        offset = get_json(server_times_url + server)
         return int(offset)
     except Exception:
         logger.warning(f"Failed to get data from {server_times_url + server}")
@@ -119,7 +123,7 @@ def get_server_time_offset(server):
 def get_stations(server):
     logger.info(f"Getting stations for {server}")
     stations = []
-    for dict in session.get(stations_url + server).json()['data']:
+    for dict in get_json(stations_url + server)['data']:
         stations.append(Station(dict))
     return stations
 
@@ -131,7 +135,7 @@ def get_trains(server, all=False):
     """
     logger.info(f"Getting trains for {server}")
     trains = []
-    for dict in session.get(trains_url + server).json()['data']:
+    for dict in get_json(trains_url + server)['data']:
         if dict['TrainData']['SignalInFront'] or all:
             trains.append(Train(dict))
     return trains
