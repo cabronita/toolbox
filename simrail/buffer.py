@@ -5,8 +5,6 @@ import logging
 from prometheus_client import start_http_server
 from time import asctime, sleep
 
-import simrail
-
 parser = ArgumentParser()
 parser.add_argument('-v', '--verbosity', action='count', default=0, help='increase output verbosity (-vv for debug)')
 args = parser.parse_args()
@@ -17,6 +15,8 @@ logging_levels = [logging.WARNING, logging.INFO, logging.DEBUG]
 logging.basicConfig(level=logging_levels[verbosity],
                     format="%(asctime)s %(levelname)s:%(name)s:%(message)s",
                     datefmt='%Y-%m-%d %H:%M:%S')
+
+import simrail
 
 
 def main():

@@ -18,7 +18,7 @@ mongo_client = MongoClient("mongodb://mongo1.cabronita.com:27017,"
 try:
     mongo_client.admin.command('ping')
 except ConnectionFailure:
-    print("Mongo connection failed")
+    logger.warning("Mongo connection failed")
     sys.exit(2)
 
 cache_backend = MongoCache(connection=mongo_client)
